@@ -8,10 +8,10 @@ require('dotenv').config()
 const {Server} = require("socket.io")
 const http = require("http")
 const threadSchema = require("./schemas/threadSchema")
-
 const mongoose = require("mongoose")
 const server = http.createServer(app)
 
+//MONGODB CONNECTION WITH DOT.ENV
 mongoose.connect(process.env.MONGO_KEY).then(() => {
     console.log("Database Connection OK")
 }).catch(e => {
@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_KEY).then(() => {
     console.log("connection failed")
 })
 const origin = "http://localhost:3000"
-
+//SOCKET
 const io = new Server(server, {
     cors: {
         origin: origin,
@@ -47,7 +47,7 @@ io.on("connection", (socket) => {
         console.log("user disconnected", socket.id)
     })
 })
-
+//SOCKET END
 app.use(express.json())
 
 
@@ -71,8 +71,9 @@ app.use(session({
     saveUninitialized: false,
     cookie: {secure: false}
 }))
-
+//app = express serveriui
 app.listen(4000)
+//server = socketams
 server.listen(4001)
 
 app.use('/', mainRouter)
